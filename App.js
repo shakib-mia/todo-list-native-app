@@ -1,20 +1,29 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from "react";
+import { StyleSheet, ScrollView, Text, View } from "react-native";
+import First from "./Components/First";
+import Second from "./Components/Second";
 
 export default function App() {
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    fetch("https://glacial-falls-22743.herokuapp.com/todos")
+      .then((res) => res.json())
+      .then((data) => setTasks(data));
+  }, [tasks]);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ScrollView style={styles.container}>
+      <First tasks={tasks}></First>
+      <Second tasks={tasks}></Second>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: "100%",
+    textAlign: "center",
+    backgroundColor: "#00a6FF",
   },
 });
