@@ -1,12 +1,13 @@
 import React from "react";
+import { useRef } from "react";
 import { useState } from "react";
 import { StyleSheet, ScrollView, Text, TextInput } from "react-native";
 
 const First = ({ tasks }) => {
   const [text, setText] = useState("");
+  const inputRef = useRef(null);
 
-  const addTask = (addTask) => {
-    alert(addTask.length);
+  const addTask = () => {
     const task = {
       title: text,
       isDone: false,
@@ -19,6 +20,8 @@ const First = ({ tasks }) => {
     })
       .then((response) => response.json())
       .then((data) => setAddResult(data));
+
+    inputRef.current = "";
   };
 
   return (
@@ -26,12 +29,13 @@ const First = ({ tasks }) => {
       <Text style={[styles.textStyle, styles.headerText]}>Add Task</Text>
 
       <TextInput
+        ref={inputRef}
         style={styles.inputStyle}
         placeholder="Add Task Here"
         onChangeText={(text) => setText(text)}
       ></TextInput>
 
-      <Text style={styles.button} onPress={() => addTask(tasks)}>
+      <Text style={styles.button} onPress={addTask}>
         Add Task
       </Text>
     </ScrollView>
